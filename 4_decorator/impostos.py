@@ -1,24 +1,40 @@
 from abc import ABC, abstractmethod
 
+
+def imposto_composto(_funcao):
+    def wrapper(self, orcamento):
+        return _funcao(self, orcamento) + self._calculo_do_outro_imposto(orcamento)
+
+    return wrapper
+
+
 class Imposto(ABC):
+    def __init__(self, outro_imposto=None):
+        self.__outro_imposto = outro_imposto
+
+    def _calculo_do_outro_imposto(self, orcamento):
+        if self.__outro_imposto is None:
+            return 0
+        return self.__outro_imposto.calcula(orcamento)
+
     @abstractmethod
-    @imposto_composto
     def calcula(self, orcamento):
         pass
 
-
+"""ISS e ICMS usao o design pattern Decorator de maneira plena"""
 class ISS(Imposto):
     def calcula(self, orcamento):
-        return orcamento.valor * 0.1
+        return orcamento.valor * 0.1 + self._calculo_do_outro_imposto(orcamento)
 
 
 class ICMS(Imposto):
     def calcula(self, orcamento):
-        return orcamento.valor * 0.06
+        return orcamento.valor * 0.06 + self._calculo_do_outro_imposto(orcamento)
 
-
+"""O ImpostoComRegrasTemplate implementa a mesama coisa, mas usando o decorator do Python """
 class ImpostoComRegrasTemplate(Imposto):
 
+    @imposto_composto
     def calcula(self, orcamento):
         if self.deve_usar_maxima_taxacao(orcamento):
             return orcamento.valor * self.maior_taxaxao()

@@ -32,4 +32,4 @@ if __name__ == '__main__':
     calculador_de_impostos.realiza_calculo(orcamento, IKCV())  # imprime 30.0
     print('ICPP com IKCV')
     calculador_de_impostos.realiza_calculo(orcamento, IKCV(ICPP()))  # imprime 55.0
-    calculador_de_impostos.realiza_calculo(orcamento, ICPP(IKCV))  # imprime 55.0
+    calculador_de_impostos.realiza_calculo(orcamento, ICPP(IKCV()))  # imprime 55.0
